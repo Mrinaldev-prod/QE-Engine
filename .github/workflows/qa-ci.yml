@@ -18,6 +18,8 @@ jobs:
           python-version: '3.11'
       - name: Install deps
         run: python -m pip install --upgrade pip && pip install -r requirements.txt
+      - name: Install Playwright browsers
+        run: python -m playwright install --with-deps
       - name: Run unit tests
         run: pytest --maxfail=1 -q
 
@@ -33,6 +35,8 @@ jobs:
           python-version: '3.11'
       - name: Install deps
         run: python -m pip install --upgrade pip && pip install -r requirements.txt
+      - name: Install Playwright browsers
+        run: python -m playwright install --with-deps
       - name: Run smoke BDD
         run: |
           mkdir -p results/allure-results
@@ -50,6 +54,8 @@ jobs:
           python-version: '3.11'
       - name: Install deps
         run: python -m pip install --upgrade pip && pip install -r requirements.txt
+      - name: Install Playwright browsers
+        run: python -m playwright install --with-deps
       - name: Run E2E BDD
         run: |
           mkdir -p results/allure-results
@@ -83,3 +89,30 @@ jobs:
         with:
           name: allure-results
           path: results/allure-results
+
+      - name: Install Java and unzip (for Allure CLI)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y default-jre unzip curl
+
+      - name: Download Allure CLI
+        run: |
+          # pinned Allure CLI version; update if you want a newer one
+          ALLURE_VERSION=2.21.0
+          curl -sL -o allure.zip "https://github.com/allure-framework/allure2/releases/download/${ALLURE_VERSION}/allure-${ALLURE_VERSION}.zip"
+          unzip -q allure.zip -d ./allure || true
+          ls -la ./allure || true
+
+      - name: Generate Allure HTML report
+        run: |
+          if [ -d "results/allure-results" ]; then
+            ./allure/bin/allure generate results/allure-results -o results/allure-report --clean || true
+          else
+            echo "No allure-results found; skipping report generation"
+          fi
+
+      - name: Upload Allure HTML report artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-report
+          path: results/allure-report
