@@ -1,0 +1,12 @@
+behave
+allure-behave
+allure-pytest
+pytest
+requests
+selenium
+appium-python-client
+webdriver-manager
+pytest-xdist
+python-dotenv
+pytest-cov
+loguru

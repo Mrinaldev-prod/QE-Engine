@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# Pre-push hook: run unit tests quickly and abort push if they fail.
+set -euo pipefail
+
+echo "Running unit tests before push..."
+python3 -m pip install --quiet -r requirements.txt
+pytest --maxfail=1 -q
+
+echo "Unit tests passed. Continuing with push."
