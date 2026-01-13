@@ -1,0 +1,36 @@
+{
+  "expand": "renderedFields,names,schema,operations,editmeta,changelog,versionedRepresentations",
+  "id": "10006",
+  "self": "https://qeengine.atlassian.net/rest/api/3/issue/10006",
+  "key": "KAN-1",
+  "renderedFields": {
+    "description": "<p>Verify user is able to login to the application: <a href=\"https://www.saucedemo.com/\" title=\"smart-link\" class=\"external-link\" rel=\"nofollow noreferrer\">https://www.saucedemo.com/</a> </p>"
+  },
+  "fields": {
+    "description": {
+      "type": "doc",
+      "version": 1,
+      "content": [
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "Verify user is able to login to the application: "
+            },
+            {
+              "type": "inlineCard",
+              "attrs": {
+                "url": "https://www.saucedemo.com/"
+              }
+            },
+            {
+              "type": "text",
+              "text": " "
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

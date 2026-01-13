@@ -3,9 +3,8 @@ allure-behave
 allure-pytest
 pytest
 requests
-selenium
+playwright
 appium-python-client
-webdriver-manager
 pytest-xdist
 python-dotenv
 pytest-cov
