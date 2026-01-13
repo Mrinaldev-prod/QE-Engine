@@ -49,7 +49,7 @@ jobs:
       - name: Run smoke BDD
         run: |
           mkdir -p results/allure-results
-          behave -k -f allure_behave.formatter:AllureFormatter -o results/allure-results tests/features/ui tests/features/api || true
+          behave -f allure_behave.formatter:AllureFormatter -o results/allure-results tests/features/ui tests/features/api || true
 
   e2e:
     name: E2E tests (mobile + ui)
@@ -70,7 +70,7 @@ jobs:
       - name: Run E2E BDD
         run: |
           mkdir -p results/allure-results
-          behave -k -f allure_behave.formatter:AllureFormatter -o results/allure-results tests/features/mobile || true
+          behave -f allure_behave.formatter:AllureFormatter -o results/allure-results tests/features/mobile || true
 
   regression:
     name: Regression suite
@@ -87,7 +87,7 @@ jobs:
       - name: Run full behave suite
         run: |
           mkdir -p results/allure-results
-          behave -k -f allure_behave.formatter:AllureFormatter -o results/allure-results tests/features || true
+          behave -f allure_behave.formatter:AllureFormatter -o results/allure-results tests/features || true
 
   upload_allure:
     name: Upload Allure results
