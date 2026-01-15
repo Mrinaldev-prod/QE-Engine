@@ -38,6 +38,48 @@ cd QE-Engine
 
 3. Create your test harness following the conventions described below.
 
+## Quickstart — Python + Playwright (example)
+
+This project includes a small Python/Behave + Playwright testing scaffold. The steps below will get you running the smoke examples locally and show how CI generates Allure reports and publishes an HTML report to GitHub Pages.
+
+1. Create and activate a virtual environment (recommended):
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+```
+
+2. Install Python dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+3. Install Playwright browsers (required for UI tests):
+
+```bash
+python3 -m playwright install
+```
+
+4. Run the test runner script (creates timestamped run logs and Allure results):
+
+```bash
+./scripts/run_tests.sh
+# The script will create `results/run_<timestamp>.log` and `results/allure-results` when tests run.
+```
+
+5. (Optional) Generate an Allure HTML report locally:
+
+```bash
+# If you have the Allure CLI installed locally (e.g. via Homebrew on macOS):
+allure generate results/allure-results -o results/allure-report --clean
+ls -la results/allure-report
+```
+
+Notes:
+- The smoke tests included in `tests/features` point to example placeholders by default (e.g. `example.com`). Provide real `base_url`/`api_base` values via behave userdata when running in your environment, or edit the feature files for local demo pages.
+- The `scripts/run_tests.sh` script will attempt to call the Allure CLI after test execution if it is present on the PATH.
+
 ## Recommended project structure
 
 This repository intentionally starts minimal. When you add code, consider the following layout:
@@ -62,6 +104,13 @@ Example (language-specific)
 - Keep the core engine minimal and implement language-specific adapters as separate modules.
 - Prefer simple, well-documented scripts for common tasks like running tests, generating reports, or packaging artifacts.
 - Aim for a fast local developer loop: short-running unit tests, deterministic fixtures, and reproducible data.
+
+## CI and reporting
+
+- This repository uses GitHub Actions to run test jobs and to collect Allure results.
+- The CI workflow additionally downloads/pins an Allure CLI release, generates an HTML report from `results/allure-results`, and publishes the generated HTML to GitHub Pages (the CI workflow includes a `publish_report` job that deploys the site). After the workflow runs, the report will be available under the repository's Pages URL (for example: `https://Mrinaldev-prod.github.io/QE-Engine/`) once Pages is configured and the workflow completes successfully.
+
+If you want reports published to an S3 bucket instead, we can add an optional job that uploads the generated HTML to S3 (this requires providing AWS credentials via repository secrets).
 
 ## Contributing
 
