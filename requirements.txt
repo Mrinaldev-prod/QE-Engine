@@ -9,3 +9,4 @@ pytest-xdist
 python-dotenv
 pytest-cov
 loguru
+uvicorn

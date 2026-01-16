@@ -1,3 +1,3 @@
  export PYTHONPATH=.. && python3 ../jira_connector/cli_fetch_jira.py --issue KAN-1 --format json --out ./jira-KAN-1.json
- Based on the file jira-KAN-1 can you generate test in gherkins format with steps definition under the folder QE-Engine\tests\features\ui considering the context of the framework.
+based on the file jira-KAN-2 can you generate test in gherkins format with steps definition under the folder QE-Engine\tests\features\ui considering the context of the framework.
  git clone git@github.com:owner/QE-Engine.git
