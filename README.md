@@ -135,4 +135,11 @@ If you'd like, I can:
 - create a `CONTRIBUTING.md` and PR checklist,
 - or add quickstart scripts for running local tests.
 
+Recent automation tasks:
+
+- Generated KAN-2 test artifacts (feature, Playwright page object, step definitions) based on Jira issue `KAN-2`.
+- If you'd like these committed and submitted as a PR, run the helper script or allow the automation to push a `feat/kan2-tests` branch and open a PR.
+
+<!-- PR automation note: PR created by automation will appear under feat/kan2-tests -->
+
 Tell me which of the above you'd like and I'll scaffold it next.
