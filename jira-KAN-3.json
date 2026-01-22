@@ -1,0 +1,169 @@
+{
+  "expand": "renderedFields,names,schema,operations,editmeta,changelog,versionedRepresentations",
+  "id": "10072",
+  "self": "https://qeengine.atlassian.net/rest/api/3/issue/10072",
+  "key": "KAN-3",
+  "renderedFields": {
+    "description": "<p><b>As a QE</b></p>\n\n<p><b>I want to</b> open the <a href=\"https://www.gov.uk/guidance/find-public-health-resources\" class=\"external-link\" rel=\"nofollow noreferrer\">Public Health Search Resource</a></p>\n\n<p><b>So that</b> I can find the featured programme called \u201cAnnual flu Vaccination Programme\u201c</p>\n\n\n\n<p><ins><b>Acceptance Criteria</b></ins></p>\n\n<p><b>Given</b> use open the <a href=\"https://www.gov.uk/guidance/find-public-health-resources\" class=\"external-link\" rel=\"nofollow noreferrer\">Public Health Search Resource</a> website</p>\n\n<p><b>When</b> user search for featured programme \u201cAnnual flu Vaccination Programme\u201c</p>\n\n<p><b>Then</b> user should see \u201cAnnual flu Vaccination Programme\u201c links and articles </p>"
+  },
+  "fields": {
+    "description": {
+      "type": "doc",
+      "version": 1,
+      "content": [
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "As a QE",
+              "marks": [
+                {
+                  "type": "strong"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "I want to",
+              "marks": [
+                {
+                  "type": "strong"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "text": " open the "
+            },
+            {
+              "type": "text",
+              "text": "Public Health Search Resource",
+              "marks": [
+                {
+                  "type": "link",
+                  "attrs": {
+                    "href": "https://www.gov.uk/guidance/find-public-health-resources"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "So that",
+              "marks": [
+                {
+                  "type": "strong"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "text": " I can find the featured programme called \u201cAnnual flu Vaccination Programme\u201c"
+            }
+          ]
+        },
+        {
+          "type": "paragraph"
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "Acceptance Criteria",
+              "marks": [
+                {
+                  "type": "strong"
+                },
+                {
+                  "type": "underline"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "Given",
+              "marks": [
+                {
+                  "type": "strong"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "text": " use open the "
+            },
+            {
+              "type": "text",
+              "text": "Public Health Search Resource",
+              "marks": [
+                {
+                  "type": "link",
+                  "attrs": {
+                    "href": "https://www.gov.uk/guidance/find-public-health-resources"
+                  }
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "text": " website"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "When",
+              "marks": [
+                {
+                  "type": "strong"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "text": " user search for featured programme \u201cAnnual flu Vaccination Programme\u201c"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "Then",
+              "marks": [
+                {
+                  "type": "strong"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "text": " user should see \u201cAnnual flu Vaccination Programme\u201c links and articles "
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
