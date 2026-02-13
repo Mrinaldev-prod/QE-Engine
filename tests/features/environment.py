@@ -36,21 +36,62 @@ def before_all(context):
     else:
         context.browser = context._playwright.chromium.launch(headless=not headed)
 
-    context.page = context.browser.new_page()
+    # Do not create a persistent browser context here; create per-scenario
+    # contexts in `before_scenario` so they can be finalized (closed) after
+    # each scenario to ensure videos are written. We create the `videos`
+    # directory here so the helper in after_scenario can always write into it.
+    results_dir = RESULTS_DIR
+    videos_dir = results_dir / 'videos'
+    videos_dir.mkdir(parents=True, exist_ok=True)
+
+
+def before_scenario(context, scenario):
+    """Create a fresh browser context and page for each scenario so Playwright
+    video recording is per-scenario and can be finalized on close.
+    """
+    vids = RESULTS_DIR / 'videos'
+    context.browser_context = context.browser.new_context(record_video_dir=str(vids))
+    context.page = context.browser_context.new_page()
 
 
 def after_scenario(context, scenario):
-    if scenario.status.name == 'failed':
-        try:
-            page = getattr(context, 'page', None)
-            if page:
-                screenshots = RESULTS_DIR / 'screenshots'
-                screenshots.mkdir(parents=True, exist_ok=True)
-                filename = screenshots / f'{scenario.name.replace(" ", "_")}_{int(time.time())}.png'
+    try:
+        page = getattr(context, 'page', None)
+        screenshots = RESULTS_DIR / 'screenshots'
+        screenshots.mkdir(parents=True, exist_ok=True)
+        vid_dir = RESULTS_DIR / 'videos'
+        vid_dir.mkdir(parents=True, exist_ok=True)
+        ts = int(time.time())
+        safe_name = scenario.name.replace(' ', '_')
+        if page:
+            # always capture a screenshot for traceability
+            filename = screenshots / f'{safe_name}_{ts}.png'
+            try:
                 page.screenshot(path=str(filename), full_page=True)
                 context.logger.info(f'Screenshot saved to {filename}')
-        except Exception as e:
-            context.logger.exception('Failed to capture screenshot: %s', e)
+            except Exception:
+                context.logger.exception('Failed to capture screenshot')
+
+        # finalize video by closing the browser context if present; Playwright
+        # writes video files on context close
+        try:
+            bw_ctx = getattr(context, 'browser_context', None)
+            if bw_ctx:
+                bw_ctx.close()
+                # move the most recent webm in videos dir to a readable name
+                vids = sorted(vid_dir.glob('*.webm'), key=lambda p: p.stat().st_mtime)
+                if vids:
+                    src = vids[-1]
+                    dst = vid_dir / f'{safe_name}_{ts}.webm'
+                    try:
+                        src.rename(dst)
+                        context.logger.info(f'Video saved to {dst}')
+                    except Exception:
+                        context.logger.exception('Failed to move video file')
+        except Exception:
+            context.logger.exception('Error finalizing video')
+    except Exception:
+        context.logger.exception('Error in after_scenario hooks')
 
 
 def after_all(context):
