@@ -32,18 +32,19 @@ case "${1:-all}" in
     ;;
   smoke)
     # Ensure Playwright browsers are installed (best-effort)
-    run_py python3 -m playwright install || true
-    # Run behave via python -m to avoid PATH issues and send output to run log
-    run_py python3 -m behave -f allure_behave.formatter:AllureFormatter -o "$RESULTS_DIR" tests/features/ui tests/features/api || true
+  run_py python3 -m playwright install || true
+  # Run behave with headed browser by default for local debugging; can be
+  # overridden by passing -D headed=false
+  run_py python3 -m behave -D headed=true -f allure_behave.formatter:AllureFormatter -o "$RESULTS_DIR" tests/features/ui tests/features/api || true
     ;;
   e2e)
-    run_py python3 -m playwright install || true
-    run_py python3 -m behave -f allure_behave.formatter:AllureFormatter -o "$RESULTS_DIR" tests/features/mobile || true
+  run_py python3 -m playwright install || true
+  run_py python3 -m behave -D headed=true -f allure_behave.formatter:AllureFormatter -o "$RESULTS_DIR" tests/features/mobile || true
     ;;
   all)
-    run_py python3 -m pytest --maxfail=1 -q --alluredir "$RESULTS_DIR"
-    run_py python3 -m playwright install || true
-    run_py python3 -m behave -f allure_behave.formatter:AllureFormatter -o "$RESULTS_DIR" tests/features || true
+  run_py python3 -m pytest --maxfail=1 -q --alluredir "$RESULTS_DIR"
+  run_py python3 -m playwright install || true
+  run_py python3 -m behave -D headed=true -f allure_behave.formatter:AllureFormatter -o "$RESULTS_DIR" tests/features || true
     ;;
   *)
     echo "Unknown target. Usage: $0 [unit|smoke|e2e|all]" | tee -a "$RUN_LOG"

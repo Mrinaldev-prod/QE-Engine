@@ -22,15 +22,19 @@ def before_all(context):
     context.logger = logging.getLogger('behave')
     context.logger.info('Starting behave run')
 
-    # Start Playwright and launch a headless browser for UI steps
+    # Start Playwright and launch a browser for UI steps
     context._playwright = sync_playwright().start()
     browser_name = context.config.userdata.get('browser', 'chromium')
+    # default to headed mode so local runs show the browser window; can be
+    # overridden by passing -D headed=false to behave if needed
+    headed_flag = str(context.config.userdata.get('headed', 'true')).lower()
+    headed = headed_flag in ('1', 'true', 'yes')
     if browser_name == 'firefox':
-        context.browser = context._playwright.firefox.launch(headless=True)
+        context.browser = context._playwright.firefox.launch(headless=not headed)
     elif browser_name == 'webkit':
-        context.browser = context._playwright.webkit.launch(headless=True)
+        context.browser = context._playwright.webkit.launch(headless=not headed)
     else:
-        context.browser = context._playwright.chromium.launch(headless=True)
+        context.browser = context._playwright.chromium.launch(headless=not headed)
 
     context.page = context.browser.new_page()
 
