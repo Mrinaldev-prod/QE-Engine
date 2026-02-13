@@ -1,8 +1,8 @@
-"""Behave environment hooks: Playwright setup, logging, screenshots on failure, and teardown.
+"""Behave environment hooks for Playwright (placed under features so behave discovers it).
 
-This file starts a Playwright browser (sync API) before the test run and exposes
-`context.page` for steps to use. On failures it captures Playwright screenshots
-into `results/screenshots`.
+This mirrors the project's top-level `tests/environment.py` Playwright setup but
+lives under `tests/features` so behave will automatically import it when run
+from the `tests` directory.
 """
 import time
 import logging
@@ -15,7 +15,6 @@ RESULTS_DIR = Path('results')
 
 def before_all(context):
     RESULTS_DIR.mkdir(parents=True, exist_ok=True)
-    # simple logging setup
     log_path = RESULTS_DIR / f'run_{int(time.time())}.log'
     logging.basicConfig(filename=str(log_path), level=logging.INFO,
                         format='%(asctime)s %(levelname)s %(message)s')
@@ -25,7 +24,6 @@ def before_all(context):
 
     # Start Playwright and launch a browser for UI steps
     context._playwright = sync_playwright().start()
-    # Choose browser via userdata if provided; default to chromium
     browser_name = context.config.userdata.get('browser', 'chromium')
     # default to headed mode so local runs show the browser window; can be
     # overridden by passing -D headed=false to behave if needed
@@ -38,16 +36,25 @@ def before_all(context):
     else:
         context.browser = context._playwright.chromium.launch(headless=not headed)
 
-    # create a browser context with video recording enabled
+    # Do not create a persistent browser context here; create per-scenario
+    # contexts in `before_scenario` so they can be finalized (closed) after
+    # each scenario to ensure videos are written. We create the `videos`
+    # directory here so the helper in after_scenario can always write into it.
     results_dir = RESULTS_DIR
     videos_dir = results_dir / 'videos'
     videos_dir.mkdir(parents=True, exist_ok=True)
-    context.browser_context = context.browser.new_context(record_video_dir=str(videos_dir))
+
+
+def before_scenario(context, scenario):
+    """Create a fresh browser context and page for each scenario so Playwright
+    video recording is per-scenario and can be finalized on close.
+    """
+    vids = RESULTS_DIR / 'videos'
+    context.browser_context = context.browser.new_context(record_video_dir=str(vids))
     context.page = context.browser_context.new_page()
 
 
 def after_scenario(context, scenario):
-    # On failure, capture screenshot using Playwright page (if available)
     try:
         page = getattr(context, 'page', None)
         screenshots = RESULTS_DIR / 'screenshots'
